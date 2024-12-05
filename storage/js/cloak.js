@@ -40,35 +40,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const presets = {
         google: {
-            favicon: "../../images/icons/google.ico",
+            favicon: "/images/icons/google.ico",
             title: "Google"
         },
         bing: {
-            favicon: "../../images/icons/bing.ico",
+            favicon: "/images/icons/bing.ico",
             title: "Bing"
         },
         gmail: {
-            favicon: "../../images/icons/gmail.ico",
+            favicon: "/images/icons/gmail.ico",
             title: "Gmail"
         },
         desmos: {
-            favicon: "../../images/icons/desmos.ico",
+            favicon: "/images/icons/desmos.ico",
             title: "Desmos | Graphing Calculator"
         },
         googleclassroom: {
-            favicon: "../../images/icons/googleclassroom.ico",
+            favicon: "/images/icons/googleclassroom.ico",
             title: "Home"
         },
         wikipedia: {
-            favicon: "../../images/icons/wikipedia.ico",
+            favicon: "/images/icons/wikipedia.ico",
             title: "Wikipedia"
         },
         chrometab: {
-            favicon: "../../images/icons/chromenewtab.ico",
+            favicon: "/images/icons/chromenewtab.ico",
             title: "New Tab"
         },
         googledrive: {
-            favicon: "../../images/icons/googledrive.ico",
+            favicon: "/images/icons/googledrive.ico",
             title: "My Drive"
         }
     };
@@ -89,3 +89,39 @@ document.addEventListener("DOMContentLoaded", function() {
         document.head.appendChild(newFavicon);
     }
 });  
+
+(function() {
+    const panicKey = localStorage.getItem('panicKey');
+    const panicUrl = localStorage.getItem('panicUrl') || 'https://www.desmos.com/scientific';
+
+    if (!panicKey) {
+        return;
+    }
+
+    const keys = new Set(panicKey.split('+'));
+    const pressedKeys = new Set();
+
+    function keyHandler(event) {
+        pressedKeys.add(event.key);
+
+        for (let key of keys) {
+            if (!pressedKeys.has(key)) {
+                return;
+            }
+        }
+
+        document.body.innerHTML = '';
+        window.location.href = panicUrl;
+    }
+
+    function keyUpHandler(event) {
+        pressedKeys.delete(event.key);
+    }
+
+    document.addEventListener('keydown', keyHandler);
+    document.addEventListener('keyup', keyUpHandler);
+})();
+
+
+
+
